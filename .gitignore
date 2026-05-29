@@ -15,3 +15,5 @@ hiera-data-*.json
 
 # Generated ansible output
 modules/ansible/
+
+.vagrant
