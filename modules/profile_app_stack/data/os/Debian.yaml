@@ -1,0 +1,13 @@
+---
+# OS family: Debian
+
+profile_app_stack::postgres_package_names:
+  - "postgresql-%{lookup('profile_app_stack::postgres_version')}"
+  - "postgresql-contrib-%{lookup('profile_app_stack::postgres_version')}"
+profile_app_stack::postgres_service_name: postgresql
+
+# PGDG apt repository
+profile_app_stack::postgres_repo_location: https://apt.postgresql.org/pub/repos/apt
+profile_app_stack::postgres_repo_release: "%{facts.os.distro.codename}-pgdg"
+profile_app_stack::postgres_repo_key_id: B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+profile_app_stack::postgres_repo_key_source: https://www.postgresql.org/media/keys/ACCC4CF8.asc

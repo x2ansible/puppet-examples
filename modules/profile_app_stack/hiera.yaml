@@ -8,5 +8,8 @@ hierarchy:
   - name: "Environment-specific"
     path: "environment/%{::environment}.yaml"
 
+  - name: "OS family"
+    path: "os/%{facts.os.family}.yaml"
+
   - name: "Common defaults"
     path: "common.yaml"

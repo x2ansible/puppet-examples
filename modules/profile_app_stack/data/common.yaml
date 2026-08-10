@@ -23,6 +23,9 @@ profile_app_stack::db_name: myapp_db
 profile_app_stack::db_user: myapp_app
 profile_app_stack::db_password: ENC[PKCS7,MIIBygYJKoZIhvcNAQcDoIIBuzCCAbcCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAdbPassword]
 
+# PostgreSQL
+profile_app_stack::postgres_version: '15'
+
 # Service
 profile_app_stack::worker_count: 2
 profile_app_stack::worker_class: uvicorn.workers.UvicornWorker

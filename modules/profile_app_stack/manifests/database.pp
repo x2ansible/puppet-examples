@@ -3,15 +3,24 @@ class profile_app_stack::database {
 
   # Only install PostgreSQL locally if db_host is localhost
   if $profile_app_stack::db_host == 'localhost' {
+    $postgres_package_names = lookup('profile_app_stack::postgres_package_names')
+    $postgres_service_name  = lookup('profile_app_stack::postgres_service_name')
 
-    package { ['postgresql', 'postgresql-contrib', 'libpq-dev']:
+    contain profile_app_stack::postgres_repo
+
+    package { $postgres_package_names:
+      ensure  => installed,
+      require => Class['profile_app_stack::postgres_repo'],
+    }
+
+    package { 'libpq-dev':
       ensure => installed,
     }
 
-    service { 'postgresql':
+    service { $postgres_service_name:
       ensure  => running,
       enable  => true,
-      require => Package['postgresql'],
+      require => Package[$postgres_package_names],
     }
 
     # Create database user — idempotent with unless guard
@@ -19,7 +28,7 @@ class profile_app_stack::database {
       command => "sudo -u postgres psql -c \"CREATE USER ${profile_app_stack::db_user} WITH PASSWORD '${profile_app_stack::db_password}';\"",
       unless  => "sudo -u postgres psql -tAc \"SELECT 1 FROM pg_roles WHERE rolname='${profile_app_stack::db_user}'\" | grep -q 1",
       path    => ['/usr/bin', '/bin'],
-      require => Service['postgresql'],
+      require => Service[$postgres_service_name],
     }
 
     # Create database — idempotent with unless guard
