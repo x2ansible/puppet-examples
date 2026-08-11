@@ -21,6 +21,7 @@ puppet module install puppetlabs-concat --version 9.0.2 || true
 puppet module install puppetlabs-firewall --version 8.1.3 || true
 puppet module install puppetlabs-vcsrepo --version 6.1.0 || true
 puppet module install puppet-redis --version 11.0.0 || true
+puppet module install puppetlabs-apt --version 9.4.0 || true
 
 echo "=== Setting up Puppet environment ==="
 mkdir -p "${PUPPET_ENV}/modules" "${PUPPET_ENV}/manifests" "${PUPPET_ENV}/data"
