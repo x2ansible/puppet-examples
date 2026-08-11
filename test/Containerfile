@@ -7,18 +7,15 @@ RUN rpm -Uvh https://yum.puppet.com/puppet8-release-el-9.noarch.rpm && \
 
 ENV PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:${PATH}"
 
-# Install required Puppet modules
-RUN puppet module install puppetlabs-stdlib --version 9.7.0 && \
-    puppet module install puppetlabs-concat --version 9.0.2 && \
-    puppet module install puppetlabs-firewall --version 8.1.3
+# Install r10k for Puppetfile module installation
+RUN /opt/puppetlabs/puppet/bin/gem install r10k --no-document
 
-# Copy the Puppet module
-COPY modules/profile_haproxy /etc/puppetlabs/code/environments/production/modules/profile_haproxy
+# Copy the entire control repo as the production environment
+COPY . /etc/puppetlabs/code/environments/production
 
-# Copy test manifest and hiera config
-COPY test/site.pp /etc/puppetlabs/code/environments/production/manifests/site.pp
-COPY test/hiera.yaml /etc/puppetlabs/puppet/hiera.yaml
-COPY test/data/ /etc/puppetlabs/code/environments/production/data/
+# Install Forge modules via r10k
+RUN cd /etc/puppetlabs/code/environments/production && \
+    r10k puppetfile install --puppetfile Puppetfile --moduledir modules
 
 # systemd init (from ubi-init base)
 CMD ["/sbin/init"]

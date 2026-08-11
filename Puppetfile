@@ -12,8 +12,10 @@ mod 'puppetlabs-firewall', '8.1.3'
 # Version control
 mod 'puppetlabs-vcsrepo', '6.1.0'
 
-# Redis
+# Redis (+ transitive deps: puppet-systemd requires puppetlabs-inifile)
 mod 'puppet-redis', '11.0.0'
+mod 'puppet-systemd', '7.1.0'
+mod 'puppetlabs-inifile', '6.1.1'
 
 # APT repository management
 mod 'puppetlabs-apt', '9.4.0'
