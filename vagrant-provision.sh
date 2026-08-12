@@ -2,7 +2,8 @@
 set -e
 
 PUPPET_REPO="/puppet-repo"
-PUPPET_ENV="/etc/puppetlabs/code/environments/production"
+PUPPET_ENVPATH="/etc/puppetlabs/code/environments"
+PUPPET_ENV="${PUPPET_ENVPATH}/production"
 
 echo "=== Installing Puppet 8 ==="
 if ! command -v puppet &>/dev/null; then
@@ -15,35 +16,25 @@ fi
 
 export PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:${PATH}"
 
-echo "=== Installing required Puppet modules ==="
-puppet module install puppetlabs-stdlib --version 9.7.0 || true
-puppet module install puppetlabs-concat --version 9.0.2 || true
-puppet module install puppetlabs-firewall --version 8.1.3 || true
-puppet module install puppetlabs-vcsrepo --version 6.1.0 || true
-puppet module install puppet-redis --version 11.0.0 || true
-puppet module install puppetlabs-apt --version 9.4.0 || true
+echo "=== Installing r10k ==="
+/opt/puppetlabs/puppet/bin/gem install r10k --no-document
+
+echo "=== Installing Forge modules via r10k ==="
+cd "${PUPPET_REPO}"
+r10k puppetfile install --puppetfile Puppetfile --moduledir modules
 
 echo "=== Setting up Puppet environment ==="
-mkdir -p "${PUPPET_ENV}/modules" "${PUPPET_ENV}/manifests" "${PUPPET_ENV}/data"
-
-# Copy all modules from repo (including stub for puppetdb_query)
-for module in profile_haproxy profile_app_stack profile_redis_cluster puppetdb_query_stub; do
-  rm -rf "${PUPPET_ENV}/modules/${module}"
-  cp -r "${PUPPET_REPO}/modules/${module}" "${PUPPET_ENV}/modules/${module}"
-done
-
-# Copy test manifest and hiera config
-cp "${PUPPET_REPO}/test/site.pp" "${PUPPET_ENV}/manifests/site.pp"
-cp "${PUPPET_REPO}/test/hiera.yaml" /etc/puppetlabs/puppet/hiera.yaml
-cp -r "${PUPPET_REPO}/test/data/"* "${PUPPET_ENV}/data/"
+rm -rf "${PUPPET_ENV}"
+mkdir -p "${PUPPET_ENVPATH}"
+ln -sfn "${PUPPET_REPO}" "${PUPPET_ENV}"
 
 echo "=== Applying Puppet manifest ==="
 set +e
 puppet apply \
-  --modulepath="${PUPPET_ENV}/modules" \
-  --hiera_config="/etc/puppetlabs/puppet/hiera.yaml" \
-  "${PUPPET_ENV}/manifests/site.pp" \
-  --detailed-exitcodes
+  --environmentpath="${PUPPET_ENVPATH}" \
+  --environment=production \
+  --detailed-exitcodes \
+  "${PUPPET_ENV}/manifests/site.pp"
 EXIT_CODE=$?
 set -e
 

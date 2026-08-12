@@ -3,6 +3,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_DIR="$(dirname "$SCRIPT_DIR")"
+PUPPET_ENV="/etc/puppetlabs/code/environments/production"
 
 echo "=== Building Puppet test container ==="
 podman build -t puppet-haproxy-test -f "$SCRIPT_DIR/Containerfile" "$REPO_DIR"
@@ -17,9 +18,10 @@ sleep 3
 echo "=== Applying Puppet manifest ==="
 set +e
 podman exec puppet-test puppet apply \
-  --modulepath=/etc/puppetlabs/code/environments/production/modules \
-  /etc/puppetlabs/code/environments/production/manifests/site.pp \
-  --detailed-exitcodes
+  --environmentpath=/etc/puppetlabs/code/environments \
+  --environment=production \
+  --detailed-exitcodes \
+  "${PUPPET_ENV}/manifests/site.pp"
 EXIT_CODE=$?
 set -e
 

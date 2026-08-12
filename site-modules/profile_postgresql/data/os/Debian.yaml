@@ -1,0 +1,10 @@
+---
+profile_postgresql::package_names:
+  - "postgresql-%{lookup('profile_postgresql::version')}"
+  - "postgresql-contrib-%{lookup('profile_postgresql::version')}"
+profile_postgresql::service_name: postgresql
+
+profile_postgresql::repo_location: https://apt.postgresql.org/pub/repos/apt
+profile_postgresql::repo_release: "%{facts.os.distro.codename}-pgdg"
+profile_postgresql::repo_key_id: B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+profile_postgresql::repo_key_source: https://www.postgresql.org/media/keys/ACCC4CF8.asc
