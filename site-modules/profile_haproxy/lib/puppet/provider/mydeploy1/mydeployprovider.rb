@@ -2,7 +2,7 @@ require 'net/http'
 require 'json'
 require 'uri'
 
-Puppet::Type.type(:myDeploy1).provide(:myDeployProvider) do
+Puppet::Type.type(:mydeploy1).provide(:mydeployprovider) do
   desc "Fetches the URL and writes the response to the target file"
 
   def exists?
@@ -21,7 +21,7 @@ Puppet::Type.type(:myDeploy1).provide(:myDeployProvider) do
 
   private
 
-  # Same fetch logic as myFunction1: return parsed JSON, the raw body, or an
+  # Same fetch logic as myfunction1: return parsed JSON, the raw body, or an
   # error/unreachable hash instead of raising.
   def fetch(url)
     begin

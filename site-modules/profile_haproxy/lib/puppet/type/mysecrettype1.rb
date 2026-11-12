@@ -1,4 +1,4 @@
-Puppet::Type.newtype(:mySecretType1) do
+Puppet::Type.newtype(:mysecrettype1) do
   @doc = "Registers a server in the proprietary Enterprise Scheduler platform"
 
   ensurable

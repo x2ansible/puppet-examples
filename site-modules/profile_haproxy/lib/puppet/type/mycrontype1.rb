@@ -1,4 +1,4 @@
-Puppet::Type.newtype(:myCronType1) do
+Puppet::Type.newtype(:mycrontype1) do
   @doc = "Manages a cron entry that runs a command on a schedule"
 
   ensurable

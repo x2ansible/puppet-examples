@@ -39,18 +39,21 @@ class profile_haproxy (
     content => stdlib::to_json($health_check),
   }
 
-  myDeploy1 { 'myapp':
-    url  => 'http://localhost/',
-    file => '/var/lib/haproxy/deploy_check.json',
+  mydeploy1 { 'myapp':
+    ensure => present,
+    url    => 'http://localhost/',
+    file   => '/var/lib/haproxy/deploy_check.json',
   }
 
   $service_token = profile_haproxy::mysecretfunction1('haproxy_service_token')
 
-  mySecretType1 { 'haproxy-node':
+  mysecrettype1 { 'haproxy-node':
+    ensure   => present,
     schedule => 'daily',
   }
 
-  myCronType1 { 'haproxy-backup':
+  mycrontype1 { 'haproxy-backup':
+    ensure  => present,
     command => '/usr/local/bin/haproxy-backup.sh',
     hour    => '2',
     minute  => '30',

@@ -1,4 +1,4 @@
-Puppet::Type.newtype(:myDeploy1) do
+Puppet::Type.newtype(:mydeploy1) do
   @doc = "Fetches a URL over HTTP and writes the response to a file"
 
   ensurable

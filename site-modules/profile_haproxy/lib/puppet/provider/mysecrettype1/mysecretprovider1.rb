@@ -1,4 +1,4 @@
-Puppet::Type.type(:mySecretType1).provide(:mySecretProvider1) do
+Puppet::Type.type(:mysecrettype1).provide(:mysecretprovider1) do
   desc "Registers servers in the Enterprise Scheduler platform via the proprietary schedulerctl CLI"
 
   SCHEDULERCTL = '/usr/local/bin/schedulerctl'

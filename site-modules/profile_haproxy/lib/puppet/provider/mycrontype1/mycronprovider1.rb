@@ -1,6 +1,6 @@
 require 'stringio'
 
-Puppet::Type.type(:myCronType1).provide(:myCronProvider1) do
+Puppet::Type.type(:mycrontype1).provide(:mycronprovider1) do
   desc "Manages cron entries for the root user via the crontab command"
 
   def exists?
