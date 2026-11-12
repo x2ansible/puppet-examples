@@ -2,7 +2,7 @@ require 'net/http'
 require 'json'
 require 'uri'
 
-Puppet::Functions.create_function(:'profile_haproxy::myFunction1') do
+Puppet::Functions.create_function(:'profile_haproxy::myfunction1') do
   dispatch :execute do
     param 'String', :url
     return_type 'Variant[Hash, Array, String]'

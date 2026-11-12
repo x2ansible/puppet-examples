@@ -5,7 +5,7 @@ rescue LoadError
   INTERNAL_LIB_AVAILABLE = false
 end
 
-Puppet::Functions.create_function(:'profile_haproxy::mySecretFunction1') do
+Puppet::Functions.create_function(:'profile_haproxy::mysecretfunction1') do
   dispatch :execute do
     param 'String', :credential_name
     return_type 'String'

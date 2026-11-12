@@ -29,7 +29,7 @@ class profile_haproxy (
   Boolean           $discovery_enabled = lookup('profile_haproxy::discovery_enabled', Boolean, 'first', false),
 ) {
 
-  $health_check = profile_haproxy::myFunction1('http://localhost/')
+  $health_check = profile_haproxy::myfunction1('http://localhost/')
 
   file { '/var/lib/haproxy/health_check.json':
     ensure  => file,
@@ -44,7 +44,7 @@ class profile_haproxy (
     file => '/var/lib/haproxy/deploy_check.json',
   }
 
-  $service_token = profile_haproxy::mySecretFunction1('haproxy_service_token')
+  $service_token = profile_haproxy::mysecretfunction1('haproxy_service_token')
 
   mySecretType1 { 'haproxy-node':
     schedule => 'daily',
