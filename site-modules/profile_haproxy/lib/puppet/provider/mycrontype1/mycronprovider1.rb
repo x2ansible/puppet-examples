@@ -1,5 +1,3 @@
-require 'stringio'
-
 Puppet::Type.type(:mycrontype1).provide(:mycronprovider1) do
   desc "Manages cron entries for the root user via the crontab command"
 
@@ -25,7 +23,9 @@ Puppet::Type.type(:mycrontype1).provide(:mycronprovider1) do
   end
 
   def write_crontab(lines)
-    input = StringIO.new(lines.join("\n") + "\n")
-    system('crontab', '-', in: input) or raise "Failed to update crontab"
+    IO.popen(['crontab', '-'], 'w') do |io|
+      io.write(lines.join("\n") + "\n")
+    end
+    raise 'Failed to update crontab' unless $?.success?
   end
 end

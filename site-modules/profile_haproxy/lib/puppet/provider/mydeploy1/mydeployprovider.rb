@@ -1,6 +1,7 @@
 require 'net/http'
 require 'json'
 require 'uri'
+require 'fileutils'
 
 Puppet::Type.type(:mydeploy1).provide(:mydeployprovider) do
   desc "Fetches the URL and writes the response to the target file"
@@ -12,6 +13,7 @@ Puppet::Type.type(:mydeploy1).provide(:mydeployprovider) do
   def create
     result = fetch(resource[:url])
     content = result.is_a?(String) ? result : JSON.pretty_generate(result)
+    FileUtils.mkdir_p(File.dirname(resource[:file]))
     File.write(resource[:file], content)
   end
 

@@ -37,6 +37,7 @@ class profile_haproxy (
     group   => $group,
     mode    => '0644',
     content => stdlib::to_json($health_check),
+    require => Class['profile_haproxy::install'],
   }
 
   mydeploy1 { 'myapp':
