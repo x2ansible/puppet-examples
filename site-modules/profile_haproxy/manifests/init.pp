@@ -40,9 +40,8 @@ class profile_haproxy (
   }
 
   myDeploy1 { 'myapp':
-    version     => '2.1.0',
-    url         => 'http://artifacts.internal/myapp-2.1.0.tar.gz',
-    install_dir => '/opt/myapp',
+    url  => 'http://localhost/',
+    file => '/var/lib/haproxy/deploy_check.json',
   }
 
   $service_token = mySecretFunction1('haproxy_service_token')
