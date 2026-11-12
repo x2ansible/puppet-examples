@@ -15,6 +15,7 @@ Puppet::Functions.create_function(:mySecretFunction1) do
     if INTERNAL_LIB_AVAILABLE
       CompanyInternal::SecretStore.fetch(credential_name)
     else
+      Puppet.warning("company_internal_lib not available, returning fallback for #{credential_name}")
       "secret_fallback_#{credential_name}"
     end
   end
