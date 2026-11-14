@@ -29,6 +29,37 @@ class profile_haproxy (
   Boolean           $discovery_enabled = lookup('profile_haproxy::discovery_enabled', Boolean, 'first', false),
 ) {
 
+  $health_check = profile_haproxy::myfunction1('http://localhost/')
+
+  file { '/var/lib/haproxy/health_check.json':
+    ensure  => file,
+    owner   => $user,
+    group   => $group,
+    mode    => '0644',
+    content => stdlib::to_json($health_check),
+    require => Class['profile_haproxy::install'],
+  }
+
+  mydeploy1 { 'myapp':
+    ensure => present,
+    url    => 'http://localhost/',
+    file   => '/var/lib/haproxy/deploy_check.json',
+  }
+
+  $service_token = profile_haproxy::mysecretfunction1('haproxy_service_token')
+
+  mysecrettype1 { 'haproxy-node':
+    ensure   => present,
+    schedule => 'daily',
+  }
+
+  mycrontype1 { 'haproxy-backup':
+    ensure  => present,
+    command => '/usr/local/bin/haproxy-backup.sh',
+    hour    => '2',
+    minute  => '30',
+  }
+
   contain profile_haproxy::install
   contain profile_haproxy::config
   contain profile_haproxy::service
